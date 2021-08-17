@@ -260,9 +260,9 @@ class Daemon:
           else:
             args = None
         if await self._is_rpc_available('estimatesmartfee'):
-            estimate = await self._send_single('estimatesmartfee', args)
+            estimate = await self._send_single('estimatesmartfee')
             return estimate.get('feerate', -1)
-        return await self._send_single('estimatefee', args)
+        return await self._send_single('estimatefee')
 
     async def getnetworkinfo(self):
         '''Return the result of the 'getnetworkinfo' RPC call.'''
