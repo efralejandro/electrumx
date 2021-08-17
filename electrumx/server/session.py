@@ -1290,14 +1290,14 @@ class ElectrumX(SessionBase):
         self.bump_cost(1.0)
         return await self.daemon_request('relayfee')
 
-    async def estimatefee(self, number, mode=None):
+    async def estimatefee(self, number=None, mode=None):
         '''The estimated transaction fee per kilobyte to be paid for a
         transaction to be included within a certain number of blocks.
 
         number: the number of blocks
         mode: CONSERVATIVE or ECONOMICAL estimation mode
         '''
-        number = non_negative_integer(number)
+        #number = non_negative_integer(number)
         # use whitelist for mode, otherwise it would be easy to force a cache miss:
         if mode not in self.coin.ESTIMATEFEE_MODES:
             raise RPCError(BAD_REQUEST, f'unknown estimatefee mode: {mode}')
@@ -1326,7 +1326,10 @@ class ElectrumX(SessionBase):
             if mode:
                 feerate = await self.daemon_request('estimatefee', number, mode)
             else:
+              if number:
                 feerate = await self.daemon_request('estimatefee', number)
+                else:
+                  feerate = await self.daemon_request('estimatefee')
             assert feerate is not None
             assert blockhash is not None
             cache[(number, mode)] = (blockhash, feerate, lock)
