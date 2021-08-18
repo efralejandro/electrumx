@@ -1326,10 +1326,10 @@ class ElectrumX(SessionBase):
             if mode:
                 feerate = await self.daemon_request('estimatefee', number, mode)
             else:
-              if number:
-                feerate = await self.daemon_request('estimatefee', number)
+                if number:
+                    feerate = await self.daemon_request('estimatefee', number)
                 else:
-                  feerate = await self.daemon_request('estimatefee')
+                    feerate = await self.daemon_request('estimatefee')
             assert feerate is not None
             assert blockhash is not None
             cache[(number, mode)] = (blockhash, feerate, lock)
